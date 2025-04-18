@@ -31,7 +31,7 @@ public class ProductService {
         // Default values
         page = page != null ? page : 0;
         limit = limit != null ? limit : 10;
-        sortBy = "createdAt";
+       // sortBy = "createdAt";
         sortOrder = sortOrder != null ? sortOrder : "desc";
         
         // Create sort object

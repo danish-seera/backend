@@ -70,7 +70,7 @@ public class ProductScheduler {
         product.setTitle(brand + " " + style + " " + color + " T-Shirt");
         product.setDescription("High quality " + style.toLowerCase() + " " + color.toLowerCase() + " t-shirt from " + brand);
         product.setPrice(new BigDecimal(basePrice));
-        product.setCategory("Clothing");
+        product.setCategory("Topwear");
         product.setCreatedAt(LocalDateTime.now());
         product = productRepository.saveAndFlush(product);
 
