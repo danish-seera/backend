@@ -1,5 +1,9 @@
 package com.kabirclub.entity;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -18,12 +22,24 @@ public class ProductVariant {
     @JsonIgnoreProperties({"images", "variants", "tags"})
     private Product product;
 
+    @Transient
+    private List<ProductImage> images;
+
     @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
-    private Double price;
+    private BigDecimal price;
 
     @Column(nullable = false)
     private Integer stock;
+
+    @Column(nullable = false)
+    private String color;
+
+    @Column(nullable = false)
+    private String size;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 } 

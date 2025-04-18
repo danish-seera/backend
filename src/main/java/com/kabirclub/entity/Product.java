@@ -3,6 +3,9 @@ package com.kabirclub.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -21,10 +24,10 @@ public class Product {
     private String description;
 
     @Column(nullable = false)
-    private Double price;
+    private BigDecimal price;
 
-    @Transient
-    private List<ProductImage> images;
+    @Column(nullable = false)
+    private String category;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnoreProperties("product")
@@ -34,12 +37,6 @@ public class Product {
     @JsonIgnoreProperties("product")
     private List<ProductTag> tags;
 
-    @Column(nullable = false)
-    private Boolean available = true;
-
-    @Column(nullable = false)
-    private String category;
-
     @Column(name = "created_at")
-    private Long createdAt = System.currentTimeMillis();
+    private LocalDateTime createdAt;
 } 

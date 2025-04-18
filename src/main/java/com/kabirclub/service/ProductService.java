@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +31,7 @@ public class ProductService {
         // Default values
         page = page != null ? page : 0;
         limit = limit != null ? limit : 10;
-        sortBy = sortBy != null ? sortBy : "createdAt";
+        sortBy = "createdAt";
         sortOrder = sortOrder != null ? sortOrder : "desc";
         
         // Create sort object
@@ -46,8 +45,11 @@ public class ProductService {
         
         // Fetch and set images for each product
         products.getContent().forEach(product -> {
-            List<ProductImage> images = productImageRepository.findByProductId(product.getId());
-            product.setImages(images);
+
+            product.getVariants().stream().forEach(variant -> {
+                List<ProductImage> images = productImageRepository.findByProductVariantId(variant.getId());
+                variant.setImages(images);
+            });
         });
         
         return products;
@@ -56,8 +58,10 @@ public class ProductService {
     public Optional<Product> getProductById(String id) {
         Optional<Product> product = productRepository.findById(id);
         product.ifPresent(p -> {
-            List<ProductImage> images = productImageRepository.findByProductId(p.getId());
-            p.setImages(images);
+            p.getVariants().stream().forEach(variant -> {
+                List<ProductImage> images = productImageRepository.findByProductVariantId(variant.getId());
+                variant.setImages(images);
+            });
         });
         return product;
     }

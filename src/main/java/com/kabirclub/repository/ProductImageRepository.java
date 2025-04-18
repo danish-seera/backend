@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface ProductImageRepository extends JpaRepository<ProductImage, String> {
-    List<ProductImage> findByProductId(String productId);
+    List<ProductImage> findByProductVariantId(String productVariantId);
 } 

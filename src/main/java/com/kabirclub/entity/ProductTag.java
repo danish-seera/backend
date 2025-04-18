@@ -1,5 +1,7 @@
 package com.kabirclub.entity;
 
+import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -22,5 +24,5 @@ public class ProductTag {
     private String tag;
 
     @Column(name = "created_at")
-    private Long createdAt = System.currentTimeMillis();
+    private LocalDateTime createdAt;
 } 
