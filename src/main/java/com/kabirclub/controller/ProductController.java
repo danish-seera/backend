@@ -1,6 +1,7 @@
 package com.kabirclub.controller;
 
 import com.kabirclub.entity.Product;
+import com.kabirclub.scheduler.BottomwearScheduler;
 import com.kabirclub.scheduler.ProductScheduler;
 import com.kabirclub.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -22,11 +23,18 @@ public class ProductController {
     
     private final ProductService productService;
     private final ProductScheduler productScheduler;
-
-    @PostMapping("/add")
-    public ResponseEntity<String> addProduct() {
-        log.info("addProduct called");
+    private final BottomwearScheduler bottomwearScheduler;
+    @PostMapping("/add-topwear")
+    public ResponseEntity<String> addTopwear() {
+        log.info("addTopwear called");
         productScheduler.addNewShirt();
+        return ResponseEntity.ok("Success");
+    }
+
+    @PostMapping("/add-bottomwear")
+    public ResponseEntity<String> addBottomwear() {
+        log.info("addBottomwear called");
+        bottomwearScheduler.addNewBottomwear();
         return ResponseEntity.ok("Success");
     }
     
