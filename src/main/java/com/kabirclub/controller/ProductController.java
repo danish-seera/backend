@@ -1,17 +1,20 @@
 package com.kabirclub.controller;
 
+import com.kabirclub.dto.ProductRecomResponse;
 import com.kabirclub.entity.Product;
+import com.kabirclub.model.ProductResponse;
 import com.kabirclub.scheduler.BottomwearScheduler;
 import com.kabirclub.scheduler.ProductScheduler;
 import com.kabirclub.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,6 +27,7 @@ public class ProductController {
     private final ProductService productService;
     private final ProductScheduler productScheduler;
     private final BottomwearScheduler bottomwearScheduler;
+
     @PostMapping("/add-topwear")
     public ResponseEntity<String> addTopwear() {
         log.info("addTopwear called");
@@ -61,10 +65,34 @@ public class ProductController {
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable String id) {
-        log.info("getProductById called with id: {}", id);
-        Optional<Product> product = productService.getProductById(id);
-        return product.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<ProductResponse> getProductById(@PathVariable String id) {
+        try {
+            log.info("getProductById called with id: {}", id);
+            com.kabirclub.model.Product product = productService.getProductByHandle(id);
+            if (product == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ProductResponse(false, null, "Product not found", 404));
+            }
+            
+            return ResponseEntity.ok()
+                .body(new ProductResponse(true, product, "Product retrieved successfully", 200));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ProductResponse(false, null, "Internal server error", 500));
+        }
+    }
+
+    @GetMapping("/{id}/recommendations")
+    public ResponseEntity<ProductRecomResponse> getProductRecommendations(@PathVariable String id) {
+        try {
+            log.info("getProductRecommendations called with id: {}", id);
+            List<com.kabirclub.model.Product> recommendations = productService.getProductRecommendations(id);
+            
+            return ResponseEntity.ok()
+                .body(new ProductRecomResponse(true, recommendations, "Product recommendations retrieved successfully", 200));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ProductRecomResponse(false, null, "Internal server error", 500));
+        }
     }
 } 

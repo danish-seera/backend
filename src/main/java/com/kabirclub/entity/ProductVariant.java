@@ -2,6 +2,7 @@ package com.kabirclub.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -23,7 +24,7 @@ public class ProductVariant {
     private Product product;
 
     @Transient
-    private List<ProductImage> images;
+    private List<ProductImage> images = new ArrayList<>();
 
     @Column(nullable = false)
     private String name;

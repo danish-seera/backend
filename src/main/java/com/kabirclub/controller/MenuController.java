@@ -32,7 +32,7 @@ public class MenuController {
         // About menu item
         menuItems.add(new MenuItem("Topwear", "/search?category=topwear", new ArrayList<>()));
         menuItems.add(new MenuItem("Bottomwear", "/search?category=bottomwear", new ArrayList<>()));
-        // menuItems.add(new MenuItem("Accessories", "/search?category=accessories", new ArrayList<>()));
+        menuItems.add(new MenuItem("Fragrances", "/search?category=fragrances", new ArrayList<>()));
         menuItems.add(new MenuItem("Contact", "/contact", new ArrayList<>()));
         MenuResponse menuResponse = new MenuResponse(menuItems);
         

@@ -17,4 +17,7 @@ public interface ProductRepository extends JpaRepository<Product, String> {
             @Param("query") String query,
             @Param("category") String category,
             Pageable pageable);
+
+    @Query("SELECT p FROM Product p WHERE p.category = :category AND p.id != :id")
+    Page<Product> findByCategoryAndIdNot(@Param("category") String category, @Param("id") String id, Pageable pageable);
 } 
