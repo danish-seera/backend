@@ -1,5 +1,6 @@
 package com.kabirclub.controller;
 
+import com.kabirclub.dto.BestSellersResponse;
 import com.kabirclub.dto.ProductRecomResponse;
 import com.kabirclub.entity.Product;
 import com.kabirclub.model.ProductResponse;
@@ -93,6 +94,22 @@ public class ProductController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ProductRecomResponse(false, null, "Internal server error", 500));
+        }
+    }
+
+    @GetMapping("/best-sellers")
+    public ResponseEntity<BestSellersResponse> getBestSellers(
+            @RequestParam(required = false) String category,
+            @RequestParam(defaultValue = "5") int limit) {
+        try {
+            log.info("getBestSellers called with category: {}, limit: {}", category, limit);
+            List<BestSellersResponse.CategoryProducts> bestSellers = productService.getBestSellers(category, limit);
+            
+            return ResponseEntity.ok()
+                .body(new BestSellersResponse(true, bestSellers, "Best selling products retrieved successfully", 200));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new BestSellersResponse(false, null, "Internal server error", 500));
         }
     }
 } 

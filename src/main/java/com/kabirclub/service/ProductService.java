@@ -2,6 +2,7 @@ package com.kabirclub.service;
 
 import com.kabirclub.entity.ProductImage;
 import com.kabirclub.entity.ProductVariant;
+import com.kabirclub.dto.BestSellersResponse;
 import com.kabirclub.entity.Product;
 import com.kabirclub.repository.ProductImageRepository;
 import com.kabirclub.repository.ProductRepository;
@@ -113,7 +114,7 @@ public class ProductService {
         Page<Product> similarProducts = productRepository.findByCategoryAndIdNot(
             currentProduct.get().getCategory(),
             productId,
-            PageRequest.of(0, 4) // Get 4 recommendations
+            PageRequest.of(0, 3) // Get 3 recommendations
         );
 
         // Convert to model products
@@ -128,5 +129,58 @@ public class ProductService {
                 .variants(buildVariants(product.getVariants()))
                 .build())
             .collect(Collectors.toList());
+    }
+
+    public List<BestSellersResponse.CategoryProducts> getBestSellers(String category, int limit) {
+        List<BestSellersResponse.CategoryProducts> result = new ArrayList<>();
+        
+        // If category is specified, get best sellers for that category only
+        if (category != null && !category.isEmpty()) {
+            Page<Product> products = productRepository.findBestSellersByCategory(
+                category,
+                PageRequest.of(0, limit)
+            );
+            
+            result.add(new BestSellersResponse.CategoryProducts(
+                category,
+                products.getContent().stream()
+                    .map(product -> com.kabirclub.model.Product.builder()
+                        .id(product.getId())
+                        .handle(product.getId())
+                        .title(product.getTitle())
+                        .description(product.getDescription())
+                        .price(product.getPrice().doubleValue())
+                        .images(buildImages(product.getVariants()))
+                        .variants(buildVariants(product.getVariants()))
+                        .build())
+                    .collect(Collectors.toList())
+            ));
+        } else {
+            // If no category specified, get best sellers for all categories
+            List<String> categories = productRepository.findAllCategories();
+            for (String cat : categories) {
+                Page<Product> products = productRepository.findBestSellersByCategory(
+                    cat,
+                    PageRequest.of(0, limit)
+                );
+                
+                result.add(new BestSellersResponse.CategoryProducts(
+                    cat,
+                    products.getContent().stream()
+                        .map(product -> com.kabirclub.model.Product.builder()
+                            .id(product.getId())
+                            .handle(product.getId())
+                            .title(product.getTitle())
+                            .description(product.getDescription())
+                            .price(product.getPrice().doubleValue())
+                            .images(buildImages(product.getVariants()))
+                            .variants(buildVariants(product.getVariants()))
+                            .build())
+                        .collect(Collectors.toList())
+                ));
+            }
+        }
+        
+        return result;
     }
 }

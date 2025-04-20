@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface ProductRepository extends JpaRepository<Product, String> {
     
     @Query("SELECT p FROM Product p WHERE " +
@@ -19,5 +21,11 @@ public interface ProductRepository extends JpaRepository<Product, String> {
             Pageable pageable);
 
     @Query("SELECT p FROM Product p WHERE p.category = :category AND p.id != :id")
-    Page<Product> findByCategoryAndIdNot(@Param("category") String category, @Param("id") String id, Pageable pageable);
+Page<Product> findByCategoryAndIdNot(@Param("category") String category, @Param("id") String id, Pageable pageable);
+
+    @Query("SELECT p FROM Product p WHERE p.category = :category")
+    Page<Product> findBestSellersByCategory(@Param("category") String category, Pageable pageable);
+
+    @Query("SELECT DISTINCT p.category FROM Product p")
+    List<String> findAllCategories();
 } 
