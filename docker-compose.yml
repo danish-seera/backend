@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://switchyard.proxy.rlwy.net:32887
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=aJImUcTLwZMlSGZOqTegExyWaGAAelJw
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    ports:
+      - "32887:3306"
+    environment:
+      - MYSQL_DATABASE=kabir_club
+      - MYSQL_ROOT_PASSWORD=aJImUcTLwZMlSGZOqTegExyWaGAAelJw
+    volumes:
+      - mysql_data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+
+volumes:
+  mysql_data: 
