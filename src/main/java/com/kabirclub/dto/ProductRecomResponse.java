@@ -13,6 +13,7 @@ import java.util.List;
 public class ProductRecomResponse {
     private boolean success;
     private List<Product> data;
+    // asds
     private String message;
     private int statusCode;
 } 
