@@ -85,7 +85,6 @@ public class ProductScheduler {
         product.setDescription("High quality " + style.toLowerCase() + " " + color.toLowerCase() + " t-shirt from " + brand);
         product.setPrice(new BigDecimal(basePrice));
         product.setCategory("Topwear");
-        product.setCreatedAt(LocalDateTime.now());
         product = productRepository.saveAndFlush(product);
 
         // Add variants

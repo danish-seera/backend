@@ -2,6 +2,7 @@ package com.kabirclub.controller;
 
 import com.kabirclub.dto.BestSellersResponse;
 import com.kabirclub.dto.ProductRecomResponse;
+import com.kabirclub.dto.CreateProductRequest;
 import com.kabirclub.entity.Product;
 import com.kabirclub.model.ProductResponse;
 import com.kabirclub.scheduler.BottomwearScheduler;
@@ -72,14 +73,29 @@ public class ProductController {
             com.kabirclub.model.Product product = productService.getProductByHandle(id);
             if (product == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ProductResponse(false, null, "Product not found", 404));
+                    .body(ProductResponse.builder()
+                        .success(false)
+                        .data(null) 
+                        .message("Product not found")
+                        .statusCode(404)
+                        .build());
             }
             
             return ResponseEntity.ok()
-                .body(new ProductResponse(true, product, "Product retrieved successfully", 200));
+                .body(ProductResponse.builder()
+                    .success(true)
+                    .data(product)
+                    .message("Product retrieved successfully") 
+                    .statusCode(200)
+                    .build());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ProductResponse(false, null, "Internal server error", 500));
+                .body(ProductResponse.builder()
+                    .success(false)
+                    .data(null)
+                    .message("Internal server error")
+                    .statusCode(500)
+                    .build());
         }
     }
 
@@ -112,4 +128,24 @@ public class ProductController {
                 .body(new BestSellersResponse(false, null, "Internal server error", 500));
         }
     }
-} 
+
+    @PostMapping
+    public ResponseEntity<ProductResponse> createProduct(@RequestBody CreateProductRequest request) {
+        try {
+            log.info("createProduct called with request: {}", request);
+            Product product = productService.createProduct(request);
+            
+            return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ProductResponse(true, product, "Product created successfully", 201));
+        } catch (Exception e) {
+            log.error("Error creating product: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ProductResponse.builder()
+                    .success(false)
+                    .data(null)
+                    .message("Error creating product: " + e.getMessage())
+                    .statusCode(500)
+                    .build());
+        }
+    }
+}

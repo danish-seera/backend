@@ -87,7 +87,6 @@ public class BottomwearScheduler {
         product.setDescription("High quality " + type.toLowerCase() + " in " + color.toLowerCase() + " from " + brand);
         product.setPrice(new BigDecimal(basePrice));
         product.setCategory("bottomwear");
-        product.setCreatedAt(LocalDateTime.now());
         product = productRepository.saveAndFlush(product);
 
         // Add variants

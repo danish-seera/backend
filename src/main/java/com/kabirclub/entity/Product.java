@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -33,10 +32,5 @@ public class Product {
     @JsonIgnoreProperties("product")
     private List<ProductVariant> variants;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnoreProperties("product")
-    private List<ProductTag> tags;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private String tags;
 } 

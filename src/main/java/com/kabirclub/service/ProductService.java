@@ -4,8 +4,10 @@ import com.kabirclub.entity.ProductImage;
 import com.kabirclub.entity.ProductVariant;
 import com.kabirclub.dto.BestSellersResponse;
 import com.kabirclub.entity.Product;
+import com.kabirclub.dto.CreateProductRequest;
 import com.kabirclub.repository.ProductImageRepository;
 import com.kabirclub.repository.ProductRepository;
+import com.kabirclub.repository.ProductVariantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +25,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final ProductImageRepository productImageRepository;
+    private final ProductVariantRepository productVariantRepository;
 
     public Page<Product> getProducts(
             String query,
@@ -182,5 +185,17 @@ public class ProductService {
         }
         
         return result;
+    }
+
+    public Product createProduct(CreateProductRequest request) {
+        // Create main product
+        Product product = new Product();
+        product.setTitle(request.getTitle());
+        product.setDescription(request.getDescription());
+        product.setPrice(request.getPrice());
+        product.setCategory(request.getCategory());
+        product.setTags(String.join(",", request.getTags()));
+        product = productRepository.saveAndFlush(product);
+        return product;
     }
 }
