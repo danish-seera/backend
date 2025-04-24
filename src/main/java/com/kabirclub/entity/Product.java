@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -33,4 +34,7 @@ public class Product {
     private List<ProductVariant> variants;
 
     private String tags;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 } 
