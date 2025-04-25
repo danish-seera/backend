@@ -66,6 +66,7 @@ public class ProductService {
     public com.kabirclub.model.Product getProductByHandle(String handle) {
         Optional<Product> product = productRepository.findById(handle);
         if (product.isPresent()) {
+            product.get().setVariants(productVariantRepository.findByProductId(product.get().getId()));
             return com.kabirclub.model.Product.builder()
                     .id(product.get().getId())
                     .handle(product.get().getId())
@@ -216,7 +217,7 @@ public class ProductService {
         return result;
     }
 
-    public Product createProduct(CreateProductRequest request) {
+    public com.kabirclub.model.Product createProduct(CreateProductRequest request) {
         // Create main product
         Product product = new Product();
         product.setTitle(request.getTitle());
@@ -233,6 +234,8 @@ public class ProductService {
         variant.setName(request.getTitle() + " Variant");
         variant.setPrice(request.getPrice());
         variant.setStock(100);
+        variant.setColor("Default");
+        variant.setSize("Default");
         variant.setCreatedAt(LocalDateTime.now());
         variant = productVariantRepository.saveAndFlush(variant);
 
@@ -244,6 +247,6 @@ public class ProductService {
         image.setCreatedAt(LocalDateTime.now());
         image = productImageRepository.saveAndFlush(image);
 
-        return product;
+        return getProductByHandle(product.getId());
     }
 }

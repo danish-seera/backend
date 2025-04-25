@@ -166,17 +166,21 @@ public class ProductController {
     public ResponseEntity<ProductResponse> createProduct(@RequestBody CreateProductRequest request) {
         try {
             log.info("createProduct called with request: {}", request);
-            Product product = productService.createProduct(request);
-            
-            return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ProductResponse(true, product, "Product created successfully", 201));
+            com.kabirclub.model.Product product = productService.createProduct(request);
+            return ResponseEntity.ok()
+                .body(ProductResponse.builder()
+                    .success(true)
+                    .data(product)
+                    .message("Product created successfully") 
+                    .statusCode(201)
+                    .build());
         } catch (Exception e) {
             log.error("Error creating product: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ProductResponse.builder()
                     .success(false)
                     .data(null)
-                    .message("Error creating product: " + e.getMessage())
+                    .message("Internal server error")
                     .statusCode(500)
                     .build());
         }
