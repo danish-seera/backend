@@ -226,6 +226,24 @@ public class ProductService {
         product.setTags(String.join(",", request.getTags()));
         product.setCreatedAt(LocalDateTime.now());
         product = productRepository.saveAndFlush(product);
+
+        // Create product variants
+        ProductVariant variant = new ProductVariant();
+        variant.setProduct(product);
+        variant.setName(request.getTitle() + " Variant");
+        variant.setPrice(request.getPrice());
+        variant.setStock(100);
+        variant.setCreatedAt(LocalDateTime.now());
+        variant = productVariantRepository.saveAndFlush(variant);
+
+        // Create product images
+        ProductImage image = new ProductImage();
+        image.setProductVariantId(variant.getId());
+        image.setImageUrl(request.getImageUrl());
+        image.setIsPrimary(true);
+        image.setCreatedAt(LocalDateTime.now());
+        image = productImageRepository.saveAndFlush(image);
+
         return product;
     }
 }
