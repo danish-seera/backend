@@ -99,6 +99,39 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/cms/{id}")
+    public ResponseEntity<ProductResponse> getCMSProductById(@PathVariable String id) {
+        try {
+            log.info("getProductById called with id: {}", id);
+            com.kabirclub.model.Product product = productService.getCMSProductByHandle(id);
+            if (product == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(ProductResponse.builder()
+                        .success(false)
+                        .data(null) 
+                        .message("Product not found")
+                        .statusCode(404)
+                        .build());
+            }
+            
+            return ResponseEntity.ok()
+                .body(ProductResponse.builder()
+                    .success(true)
+                    .data(product)
+                    .message("Product retrieved successfully") 
+                    .statusCode(200)
+                    .build());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ProductResponse.builder()
+                    .success(false)
+                    .data(null)
+                    .message("Internal server error")
+                    .statusCode(500)
+                    .build());
+        }
+    }
+
     @GetMapping("/{id}/recommendations")
     public ResponseEntity<ProductRecomResponse> getProductRecommendations(@PathVariable String id) {
         try {

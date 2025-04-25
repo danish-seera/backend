@@ -80,6 +80,23 @@ public class ProductService {
         }
     }
 
+    public com.kabirclub.model.Product getCMSProductByHandle(String handle) {
+        Optional<Product> product = productRepository.findById(handle);
+        if (product.isPresent()) {
+            return com.kabirclub.model.Product.builder()
+                    .id(product.get().getId())
+                    .handle(product.get().getId())
+                    .title(product.get().getTitle())
+                    .description(product.get().getDescription())
+                    .price(product.get().getPrice().doubleValue())
+                    //.images(buildImages(product.get().getVariants()))
+                    .variants(buildVariants(product.get().getVariants()))
+                    .build();
+        } else {
+            return null;
+        }
+    }
+
     private List<com.kabirclub.model.ProductVariant> buildVariants(List<ProductVariant> variants) {
         List<com.kabirclub.model.ProductVariant> productVariants = new ArrayList<>();
         for (ProductVariant variant : variants) {
@@ -88,7 +105,7 @@ public class ProductService {
                     .title(variant.getName())
                     .price(variant.getPrice().doubleValue())
                     .availableForSale(variant.getStock() > 0)
-                    // .selectedOptions(buildSelectedOptions(variant.getProductOptions()))
+                    .images(buildImages(variant))
                     .build());
         }
         return productVariants;
@@ -104,6 +121,17 @@ public class ProductService {
                         .build());
             }
         }
+        return images;
+    }
+
+    private List<com.kabirclub.model.ProductImage> buildImages(ProductVariant variant) {
+        List<com.kabirclub.model.ProductImage> images = new ArrayList<>();
+        List<ProductImage> variantImages = productImageRepository.findByProductVariantId(variant.getId());
+            for (ProductImage image : variantImages) {
+                images.add(com.kabirclub.model.ProductImage.builder()
+                        .url(image.getImageUrl())
+                        .build());
+            }
         return images;
     }
 

@@ -17,4 +17,5 @@ public class ProductVariant {
     private double price;
     private boolean availableForSale;
     private List<ProductOption> selectedOptions;
+    private List<ProductImage> images;
 }
