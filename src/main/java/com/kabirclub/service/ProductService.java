@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -195,6 +196,7 @@ public class ProductService {
         product.setPrice(request.getPrice());
         product.setCategory(request.getCategory());
         product.setTags(String.join(",", request.getTags()));
+        product.setCreatedAt(LocalDateTime.now());
         product = productRepository.saveAndFlush(product);
         return product;
     }
