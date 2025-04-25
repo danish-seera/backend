@@ -89,7 +89,7 @@ public class ProductService {
                     .title(product.get().getTitle())
                     .description(product.get().getDescription())
                     .price(product.get().getPrice().doubleValue())
-                    //.images(buildImages(product.get().getVariants()))
+                    .images(buildImages(product.get().getVariants()))
                     .variants(buildVariants(product.get().getVariants()))
                     .build();
         } else {
