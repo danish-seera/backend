@@ -240,12 +240,14 @@ public class ProductService {
         variant = productVariantRepository.saveAndFlush(variant);
 
         // Create product images
-        ProductImage image = new ProductImage();
-        image.setProductVariantId(variant.getId());
-        image.setImageUrl(request.getImageUrl());
-        image.setIsPrimary(true);
-        image.setCreatedAt(LocalDateTime.now());
-        image = productImageRepository.saveAndFlush(image);
+        for (String imageUrl : request.getImageUrls()) {
+            ProductImage image = new ProductImage();
+            image.setProductVariantId(variant.getId());
+            image.setImageUrl(imageUrl);
+            image.setIsPrimary(true);
+            image.setCreatedAt(LocalDateTime.now());
+            image = productImageRepository.saveAndFlush(image);
+        }
 
         return getProductByHandle(product.getId());
     }
