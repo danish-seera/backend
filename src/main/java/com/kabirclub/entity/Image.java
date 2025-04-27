@@ -8,23 +8,17 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name = "product_images")
+@Table(name = "image")
 @Data
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class ProductImage {
+public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(name = "product_variant_id", nullable = false)
-    private String productVariantId;
+    @Column(name = "reference_id", nullable = false)
+    private String reference_id;
 
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
-
-    @Column(name = "is_primary")
-    private Boolean isPrimary = false;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
 } 
