@@ -8,11 +8,11 @@
 		<version>3.2.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.kabirclub</groupId>
-	<artifactId>backend</artifactId>
+	<groupId>com.modfi</groupId>
+	<artifactId>backend-modfi</artifactId>
 	<version>1.0.0</version>
-	<name>backend</name>
-	<description>kabirclub backend</description>
+	<name>backend-modfi</name>
+	<description>modfi backend</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -82,17 +82,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.flywaydb</groupId>
-				<artifactId>flyway-maven-plugin</artifactId>
-				<version>10.11.0</version>
-				<configuration>
-					<url>${spring.datasource.url}</url>
-					<user>${spring.datasource.username}</user>
-					<password>${spring.datasource.password}</password>
-					<driver>${spring.datasource.driver-class-name}</driver>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>

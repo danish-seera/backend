@@ -7,10 +7,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "image")
-@Data
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
